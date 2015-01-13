@@ -5,7 +5,6 @@ class StoredFile
 
   store_in :collection => "fs.files"
 
-  field :name, type: String
   field(:length, :type => Integer, :default => 0)
   field(:chunkSize, :type => Integer, :default => CHUNK_SIZE)
   field(:uploadDate, :type => Time, :default => Time.now.utc)
@@ -47,6 +46,12 @@ class StoredFile
     self.length = total_length
     self.md5 = md5digest.hexdigest
     self.save!
+  end
+
+  def each_chunk
+    self.chunks.order_by([:n, :asc]).each do |chunk|
+      yield chunk.data.data
+    end
   end
 
   protected
