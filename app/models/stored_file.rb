@@ -1,11 +1,11 @@
 class StoredFile
   include Mongoid::Document
 
-  CHUNK_SIZE = 2 ** 21
+  CHUNK_SIZE = (2 ** 21)
 
-  property :name, type: String
   store_in :collection => "fs.files"
 
+  field :name, type: String
   field(:length, :type => Integer, :default => 0)
   field(:chunkSize, :type => Integer, :default => CHUNK_SIZE)
   field(:uploadDate, :type => Time, :default => Time.now.utc)
@@ -34,7 +34,7 @@ class StoredFile
     total_length = 0
     md5digest = Digest::MD5.new
     io.rewind if io.respond_to?(:rewind)
-    while (data = io.read(self.chunk_size))
+    while (data = io.read(self.chunkSize))
       md5digest << data
       StoredFileChunk.create!(
         n: n,
