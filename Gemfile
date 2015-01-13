@@ -23,8 +23,6 @@ gem 'rack-test', :require => 'rack/test', :group => 'test'
 
 # Padrino Stable Gem
 gem 'padrino', '0.12.4'
-gem 'dragonfly'
-gem 'dragonfly-mongoid_data_store'
 
 # Or Padrino Edge
 # gem 'padrino', :github => 'padrino/padrino-framework'

@@ -10,7 +10,6 @@ GEM
       minitest (~> 5.1)
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
-    addressable (2.3.6)
     blue-daemons (1.1.11)
     bluepill (0.0.68)
       activesupport (>= 3, < 5)
@@ -33,14 +32,6 @@ GEM
     colorize (0.7.5)
     connection_pool (2.1.0)
     diff-lcs (1.2.5)
-    dragonfly (1.0.7)
-      addressable (~> 2.3)
-      multi_json (~> 1.0)
-      rack
-    dragonfly-mongoid_data_store (0.0.1)
-      dragonfly (~> 1.0)
-      mongoid (~> 4.0)
-      mongoid-grid_fs (~> 2.1)
     haml (4.0.6)
       tilt
     http_router (0.11.1)
@@ -60,14 +51,10 @@ GEM
       moped (~> 2.0.0)
       origin (~> 2.1)
       tzinfo (>= 0.3.37)
-    mongoid-grid_fs (2.1.0)
-      mime-types (>= 1.0, < 3.0)
-      mongoid (>= 3.0, < 5.0)
     moped (2.0.3)
       bson (~> 2.2)
       connection_pool (~> 2.0)
       optionable (~> 0.2.0)
-    multi_json (1.10.1)
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
     net-ssh (2.9.2)
@@ -347,8 +334,6 @@ DEPENDENCIES
   capistrano
   capistrano-bundler
   capistrano-scm-gitcopy
-  dragonfly
-  dragonfly-mongoid_data_store
   haml
   mongoid
   padrino (= 0.12.4)
