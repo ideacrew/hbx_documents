@@ -1,4 +1,4 @@
-module Parser
+module Parsers
   class DocumentListRequest
     include HappyMapper
     register_namespace "cv", "http://openhbx.org/api/terms/1.0"

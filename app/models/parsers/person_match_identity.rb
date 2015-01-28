@@ -14,7 +14,4 @@ module Parsers
     element :hbx_member_id, String
   end
 
-  def to_person_match
-
-  end
 end

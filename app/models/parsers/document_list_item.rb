@@ -1,5 +1,7 @@
 module Parsers
   class DocumentListItem
+        include HappyMapper
+
         register_namespace "cv", "http://openhbx.org/api/terms/1.0"
         tag 'document'
         namespace "cv"
