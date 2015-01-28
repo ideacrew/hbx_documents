@@ -10,6 +10,7 @@ GEM
       minitest (~> 5.1)
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
+    amq-protocol (1.9.2)
     blue-daemons (1.1.11)
     bluepill (0.0.68)
       activesupport (>= 3, < 5)
@@ -18,6 +19,8 @@ GEM
       state_machine (~> 1.1)
     bson (2.3.0)
     builder (3.2.2)
+    bunny (1.6.3)
+      amq-protocol (>= 1.9.2)
     capistrano (3.3.5)
       capistrano-stats (~> 1.1.0)
       i18n
@@ -331,6 +334,7 @@ PLATFORMS
 
 DEPENDENCIES
   bluepill (= 0.0.68)
+  bunny
   capistrano
   capistrano-bundler
   capistrano-scm-gitcopy
