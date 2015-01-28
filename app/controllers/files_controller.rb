@@ -13,7 +13,7 @@ HbxDocuments::App.controllers :files do
   end
 
   get :download, :map => "/files", :with => :id do
-    sf = StoredFile.where(params[:id]).first
+    sf = StoredFile.where({"id" => params[:id] }).first
     if sf
       content_type sf.contentType
       response['Content-Disposition'] = "attachment;filename=\"#{URI.escape(sf.filename)}\""
