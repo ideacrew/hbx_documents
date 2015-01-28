@@ -1,0 +1,11 @@
+<member_document xmlns="http://openhbx.org/api/terms/1.0">
+  <identity>
+	  <name_first>First</name_first>
+	  <name_last>Last</name_last>
+	  <ssn>123451234</ssn>
+	  <dob>19830125</dob>
+	  <email>email@me.com</email>
+	  <hbx_member_id>12345</hbx_member_id>
+  </identity>
+  <document_id>aabbcc</document_id>
+</member_document>
