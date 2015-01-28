@@ -19,7 +19,7 @@ class ExchangeInformation
   # TODO: I have a feeling we may be using this pattern
   #       A LOT.  Look into extracting it if we repeat.
   def initialize
-    @config = YAML.load_file(File.join(HbxEnterprise::App.root,'..','config', 'exchange.yml'))
+    @config = YAML.load_file(File.join(HbxDocuments::App.root,'..','config', 'exchange.yml'))
     ensure_configuration_values(@config)
   end
 
