@@ -40,6 +40,6 @@ end
 
 group :development do
   gem 'capistrano'
-  gem 'capistrano-scm-gitcopy'
+#  gem 'capistrano-scm-gitcopy'
   gem 'capistrano-bundler'
 end
