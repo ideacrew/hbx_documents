@@ -27,7 +27,7 @@ set :bundle_path, nil
 set :pty, true
 
 # Default value for :linked_files is []
-set :linked_files, (fetch(:linked_files, []) | ['config/database.yml', 'config/exchange.yaml'])
+set :linked_files, (fetch(:linked_files, []) | ['config/database.rb', 'config/exchange.yml'])
 
 # Default value for linked_dirs is []
 set :linked_dirs, fetch(:linked_dirs, []).push('log')
