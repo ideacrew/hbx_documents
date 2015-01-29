@@ -15,7 +15,7 @@ USER="nginx"
 APP_NAME="unicorn_hbx_documents"
 APP_PATH="/var/www/deployments/hbx_documents/current"
 ENV="production"
-RBENV_RUBY_VERSION="2.1.2"
+RBENV_RUBY_VERSION="2.1.5"
 
 # env
 APP_ROOT="$APP_PATH"
