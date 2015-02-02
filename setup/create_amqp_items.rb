@@ -21,7 +21,9 @@ class SetupAmqpTasks
 
   def run
     ec = ExchangeInformation
-
+    mdl_q = queue(Listeners::MemberDocumentLister.queue_name)
+    direct_ex = exchange("direct", ec.request_exchange)
+    mdl_q.bind(direct_ex, {:routing_key => Listeners::MemberDocumentLister.routing_key})
   end
 end
 

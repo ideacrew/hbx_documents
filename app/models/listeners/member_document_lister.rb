@@ -12,7 +12,12 @@ module Listeners
     def on_message(delivery_info, properties, payload)
       member_id = properties.headers['hbx_member_id']
       reply_to = properties.reply_to
-      # channel.acknowledge(delivery_info.delivery_tag, false)
+      docs = MemberDocument.where("member_id" => member_id)
+      gen_doc = Parsers::DocumentListResponse.from_documents(docs)
+      response_body = gen_doc.to_xml
+      dex = channel.default_exchange
+      dex.publish(response_body, { :routing_key => reply_to, :headers => {"return_status" => 200 }  })
+      channel.acknowledge(delivery_info.delivery_tag, false)
     end
 
     def self.routing_key

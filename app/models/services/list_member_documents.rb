@@ -54,17 +54,7 @@ module Services
 
     def docs_for_member(m_id)
       docs = MemberDocument.where("member_id" => m_id)
-      gen_doc = Parsers::DocumentListResponse.new
-      dlis = []
-      docs.each do |doc|
-        dli = Parsers::DocumentListItem.new
-        puts doc.document_id.inspect
-        dli.document_id = doc.document_id
-        dli.document_kind = doc.document_kind
-        dli.document_name = doc.document_name
-        dlis << dli
-      end
-      gen_doc.document = dlis
+      gen_doc = Parsers::DocumentListResponse.from_documents(docs)
       gen_doc.to_xml
     end
   end
