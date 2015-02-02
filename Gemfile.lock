@@ -12,7 +12,7 @@ GEM
       tzinfo (~> 1.1)
     amq-protocol (1.9.2)
     blue-daemons (1.1.11)
-    bluepill (0.0.68)
+    bluepill (0.0.69)
       activesupport (>= 3, < 5)
       blue-daemons (~> 1.1.11)
       i18n (~> 0.5)
@@ -337,7 +337,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  bluepill (= 0.0.68)
+  bluepill (= 0.0.69)
   bunny
   capistrano
   capistrano-bundler
