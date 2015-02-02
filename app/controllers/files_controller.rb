@@ -18,7 +18,7 @@ HbxDocuments::App.controllers :files do
       content_type sf.contentType
       response['Content-Disposition'] = "attachment;filename=\"#{URI.escape(sf.filename)}\""
       stream do |out|
-        sf.with_chunks do |chunk|
+        sf.each_chunk do |chunk|
           out << chunk
         end
       end
