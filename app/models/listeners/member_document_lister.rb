@@ -1,5 +1,5 @@
 module Listeners
-  class MemberDocumentListeners < ::Amqp::Client
+  class MemberDocumentLister < ::Amqp::Client
     def validate(delivery_info, properties, payload)
       if properties.headers["hbx_member_id"].blank?
         add_error("No hbx_member_id")
