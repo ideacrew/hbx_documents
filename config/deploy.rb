@@ -30,7 +30,7 @@ set :pty, true
 set :linked_files, (fetch(:linked_files, []) | ['config/database.rb', 'config/exchange.yml'])
 
 # Default value for linked_dirs is []
-set :linked_dirs, fetch(:linked_dirs, []).push('log')
+set :linked_dirs, fetch(:linked_dirs, []).push('log', 'pids')
 
 # Default value for default_env is {}
 # set :default_env, { path: "/opt/ruby/bin:$PATH" }
