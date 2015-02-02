@@ -20,7 +20,7 @@ def unset_list
 end
 
 def start_command_for(worker_name, worker_command)
-    "#{worker_command}"
+    "bundle exec padrino r #{worker_command} -e production"
     # "cd #{BUS_DIRECTORY} && export RBENV_GEMSETS=`cat #{BUS_DIRECTORY}/.rbenv-gemsets` && echo `env` > #{LOG_DIRECTORY}/#{worker_name}_envs.log && #{worker_command}"
 end
 
@@ -47,6 +47,6 @@ Bluepill.application("hbx_enterprise", :log_file => BLUEPILL_LOG) do |app|
   app.uid = "nginx"
   app.gid = "nginx"
 
-#  define_worker(app, "dcas_enrollment_provider", BUS_DIRECTORY, "padrino r amqp/dcas_enrollment_provider.rb", true)
-#  define_worker(app, "dcas_enrollment_provider_scaler", BUS_DIRECTORY, "padrino r amqp/dcas_enrollment_provider_scaler.rb")
+#  define_worker(app, "uri_resolver_listener", BUS_DIRECTORY, "amqp/uri_resolver_listener.rb", true)
+#  define_worker(app, "uri_resolver_listener_scaler", BUS_DIRECTORY, "amqp/uri_resolver_listener_scaler.rb", false)
 end
