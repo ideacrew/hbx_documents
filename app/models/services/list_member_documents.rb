@@ -23,7 +23,7 @@ module Services
         end
         extract_member_id(r_payload)
       end
-      failure.bind do |person_match_result|
+      failure.bind do |m_id|
         ["200", docs_for_member(m_id)]
       end
       failure
