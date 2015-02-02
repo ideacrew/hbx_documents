@@ -5,41 +5,37 @@ module Services
       @parser_klass = body_parser_class
     end
 
-    def call(xml)
-      data = @parser_klass.parse(xml)
-      if data == []
-        return ["422", ""]
+    def construct_pipeline
+      failure = Fail.new
+      failure.bind do |identity|
+        properties = {
+          :routing_key => "person.match",
+          :headers => identity.to_person_match
+        }
+        req = Amqp::Requestor.default
+        req.request(properties, "")
       end
-      begin
-        rc, m_id = call_person_match(data.identity)
-        case rc
-        when "200"
-          ["200", docs_for_member(m_id)]
-        when "409"
-          ["409", nil]
-        else
-          ["404", nil]
+      failure.bind do |person_match_response|
+        di, rprops, r_payload = person_match_response
+        rs = response_status_for(rprops)
+        if rs != "200"
+          throw :fail, [rs, nil]
         end
-      rescue
-        ["422", nil]
+        extract_member_id(r_payload)
       end
+      failure.bind do |person_match_result|
+        ["200", docs_for_member(m_id)]
+      end
+      failure
     end
 
-    def call_person_match(identity)
-      req = Amqp::Requestor.default
-      properties = {
-        :routing_key => "person.match",
-        :headers => identity.to_person_match
-      }
-      di, rprops, r_payload = req.request(properties, "")
-      case response_status_for(rprops)
-      when "200"
-        return(["200", extract_member_id(r_payload)])
-      when "409"
-        puts r_payload
-        return(["409", nil])
-      else
-        return(["404", nil])
+    def call(xml)
+      data = @parser_klass.parse(xml)
+      pipeline = construct_pipeline
+      begin
+        pipeline.call(data.identity)
+      rescue
+        ["422", nil]
       end
     end
 
