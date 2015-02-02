@@ -28,5 +28,15 @@ module Listeners
       ec = ExchangeInformation
       "#{ec.hbx_id}.#{ec.environment}.q.hbx_documents.member_document_lister"
     end
+
+    def self.run
+      conn = Bunny.new(ExchangeInformation.amqp_uri)
+      conn.start
+      ch = conn.create_channel
+      ch.prefetch(1)
+      q = ch.queue(queue_name, :durable => true)
+
+      self.new(ch, q).subscribe(:block => true, :manual_ack => true)
+    end
   end
 end

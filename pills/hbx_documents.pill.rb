@@ -47,6 +47,6 @@ Bluepill.application("hbx_enterprise", :log_file => BLUEPILL_LOG) do |app|
   app.uid = "nginx"
   app.gid = "nginx"
 
-#  define_worker(app, "uri_resolver_listener", BUS_DIRECTORY, "amqp/uri_resolver_listener.rb", true)
+define_worker(app, "member_document_lister", BUS_DIRECTORY, "amqp/member_document_lister.rb", true)
 #  define_worker(app, "uri_resolver_listener_scaler", BUS_DIRECTORY, "amqp/uri_resolver_listener_scaler.rb", false)
 end
