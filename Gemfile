@@ -25,6 +25,7 @@ gem 'rack-test', :require => 'rack/test', :group => 'test'
 gem 'padrino', '0.12.4'
 gem 'bunny'
 gem 'nokogiri-happymapper', :require => 'happymapper'
+gem 'forkr', '0.1.6'
 
 # Or Padrino Edge
 # gem 'padrino', :github => 'padrino/padrino-framework'
