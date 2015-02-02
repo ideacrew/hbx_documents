@@ -43,6 +43,7 @@ namespace :deploy do
     task :restart do
       on roles(:app), in: :sequence, wait: 20 do
         sudo "service unicorn_hbx_documents restart"
+        sudo "service bluepill_hbx_documents restart"
       end
     end
 
