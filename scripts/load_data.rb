@@ -3,7 +3,17 @@ class DataLoaderFor1095A
   end
 
   def load
-    files = Dir.glob(File.join(Padrino.root, "test_data", "*.pdf"))
+#    MemberDocument.delete_all
+#    StoredFileChunk.delete_all
+#    StoredFile.delete_all
+    files = Dir.glob(File.join(Padrino.root, "test_data/**", "*.pdf"))
+    total = files.length
+    puts total
+    pb = ProgressBar.create(
+       :title => "Loading pdfs",
+       :total => total,
+       :format => "%t %a %e |%B| %P%%"
+    )
     files.each do |f|
       f_name = File.basename(f)
       upload_name = f_name
@@ -19,6 +29,7 @@ class DataLoaderFor1095A
         :member_id => m_id
       )
       in_io.close
+      pb.increment
     end
   end
 
