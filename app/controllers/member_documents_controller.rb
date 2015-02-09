@@ -21,7 +21,7 @@ HbxDocuments::App.controllers :member_documents do
     sf = StoredFile.where({"id" => doc_id}).first
     status 200
     content_type sf.contentType
-    response['Content-Disposition'] = "attachment;filename=\"#{URI.escape(sf.filename)}\""
+    response['Content-Disposition'] = "inline;filename=\"#{URI.escape(sf.filename)}\""
     stream do |out|
       sf.each_chunk do |chunk|
         out << chunk
