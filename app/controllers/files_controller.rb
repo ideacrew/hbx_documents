@@ -16,7 +16,7 @@ HbxDocuments::App.controllers :files do
     sf = StoredFile.where({"id" => params[:id] }).first
     if sf
       content_type sf.contentType
-      response['Content-Disposition'] = "attachment;filename=\"#{URI.escape(sf.filename)}\""
+      response['Content-Disposition'] = "inline;filename=\"#{URI.escape(sf.filename)}\""
       stream do |out|
         sf.each_chunk do |chunk|
           out << chunk
