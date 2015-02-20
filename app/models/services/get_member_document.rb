@@ -26,20 +26,26 @@ module Services
     end
 
     def call_person_match(identity)
-      req = Amqp::Requestor.default
-      properties = {
-        :routing_key => "person.match",
-        :headers => identity.to_person_match
-      }
-      di, rprops, r_payload = req.request(properties, "")
-      case response_status_for(rprops)
-      when "200"
-        return(["200", extract_member_id(r_payload)])
-      when "409"
-        puts r_payload
-        return(["409", nil])
-      else
-        return(["404", nil])
+      conn = Bunny.new(ExchangeInformation.amqp_uri)
+      conn.start
+      begin
+        req = Amqp::Requestor.new(conn)
+        properties = {
+          :routing_key => "person.match",
+          :headers => identity.to_person_match
+        }
+        di, rprops, r_payload = req.request(properties, "")
+        case response_status_for(rprops)
+        when "200"
+          return(["200", extract_member_id(r_payload)])
+        when "409"
+          puts r_payload
+          return(["409", nil])
+        else
+          return(["404", nil])
+        end
+      ensure
+        conn.close
       end
     end
 
@@ -59,7 +65,7 @@ module Services
     def doc_for_member(m_id, doc_id)
       doc = MemberDocument.where("member_id" => m_id, "document_id" => doc_id).first
       if doc.blank?
-       return ["404", nil]
+        return ["404", nil]
       end
       ["200", doc.document_id] 
     end

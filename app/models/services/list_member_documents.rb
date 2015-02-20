@@ -12,13 +12,19 @@ module Services
           :routing_key => "person.match",
           :headers => identity.to_person_match
         }
-        req = Amqp::Requestor.default
-        di, rprops, r_payload = req.request(properties, "")
-        rs = response_status_for(rprops)
-        if rs != "200"
+        conn = Bunny.new(ExchangeInformation.amqp_uri)
+        conn.start
+        begin
+          req = Amqp::Requestor.new(conn)
+          di, rprops, r_payload = req.request(properties, "")
+          rs = response_status_for(rprops)
+          if rs != "200"
             throw :fail, [rs, nil]
+          end
+          validate_identity_data(identity, r_payload)
+        ensure
+          conn.close
         end
-        validate_identity_data(identity, r_payload)
       end
       failure.bind do |person_match_result|
         rs, m_id = person_match_result
@@ -33,11 +39,11 @@ module Services
     def call(xml)
       data = @parser_klass.parse(xml)
       pipeline = construct_pipeline
-#      begin
-        pipeline.call(data.identity)
- #     rescue
- #       ["422", nil]
- #     end
+      #      begin
+      pipeline.call(data.identity)
+      #     rescue
+      #       ["422", nil]
+      #     end
     end
 
     def response_status_for(props)
