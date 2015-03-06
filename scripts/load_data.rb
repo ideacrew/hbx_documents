@@ -17,6 +17,10 @@ class DataLoaderFor1095A
     files.each do |f|
       f_name = File.basename(f)
       upload_name = f_name
+      document_kind = "1095A"
+      if f_name.downcase.include?("corrected")
+        document_kind = "1095A Correction"
+      end
       ct = "application/pdf"
       num1, hbx, num2, m_id, p_id, *whatevs = f_name.split(".").first.split("_")
       in_io = File.open(f, 'rb')
@@ -25,7 +29,7 @@ class DataLoaderFor1095A
       MemberDocument.create!(
         :document_id => sf.id,
         :document_name => upload_name,
-        :document_kind => "1095A",
+        :document_kind => document_kind,
         :member_id => m_id
       )
       in_io.close
