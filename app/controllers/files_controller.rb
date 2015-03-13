@@ -1,10 +1,13 @@
 HbxDocuments::App.controllers :files do
 
+  register Padrino::Flash
+
   get :new, :map => "new" do
       render 'files/new'
   end
 
   post :store, :map => "/files" do
+    begin
     file = params[:file]
     if file[:tempfile].blank?
       error 422
@@ -15,6 +18,10 @@ HbxDocuments::App.controllers :files do
     sf = StoredFile.store(f_name, ct, t_file)
     status '202'
     sf.id
+      redirect('/new', :notice => "Successfully processed file #{params[:file][:filename]} id:#{sf.id}")
+    rescue Exception=>e
+      redirect('/new', :notice => "Error processing file #{params[:file]}.\n" + e.message)
+    end
   end
 
   get :download, :map => "/files", :with => :id do

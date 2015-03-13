@@ -1,3 +1,7 @@
+<% flash.each do |key, value| %>
+    <div><%= value %></div>
+<% end %>
+
 <h1>Upload 1095A Forms</h1>
 <form method="post" action="/files" enctype="multipart/form-data">
     <div><input type="file" name="file"></div>
