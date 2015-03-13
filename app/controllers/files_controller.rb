@@ -1,4 +1,9 @@
 HbxDocuments::App.controllers :files do
+
+  get :new, :map => "new" do
+      render 'files/new'
+  end
+
   post :store, :map => "/files" do
     file = params[:file]
     if file[:tempfile].blank?
