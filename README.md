@@ -7,6 +7,6 @@ Currently the store is used for 1095A PDF files but it is a generic file storage
 - It will read all the files in File.join(Padrino.root, "test_data/**", "*.pdf")
 - For each file it will create the StoredFile and MemberDocument
 
-## Deleting 1095A
+## Delete 1095A
 - Delete MemberDocument
 - Delete StoredFile
