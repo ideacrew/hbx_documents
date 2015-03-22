@@ -1,1 +1,1 @@
-Forkr.new(Listeners::MemberDocumentLister, 30).run
+Forkr.new(Listeners::MemberDocumentLister, 25).run
