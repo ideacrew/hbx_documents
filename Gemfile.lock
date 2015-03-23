@@ -33,7 +33,7 @@ GEM
     colorize (0.7.5)
     connection_pool (2.1.0)
     diff-lcs (1.2.5)
-    forkr (0.1.6)
+    forkr (0.1.7)
     haml (4.0.6)
       tilt
     http_router (0.11.1)
@@ -345,7 +345,7 @@ DEPENDENCIES
   bunny
   capistrano
   capistrano-bundler
-  forkr (= 0.1.6)
+  forkr (= 0.1.7)
   haml
   mongoid
   nokogiri-happymapper
