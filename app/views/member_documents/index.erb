@@ -1,0 +1,6 @@
+<%= partial 'member_documents/flash', :locals => { :flash => flash } %>
+
+<% @member_documents.each do |member_document|%>
+    <%= partial 'member_documents/member_document', :locals => { :member_document => member_document } %>
+    <%= partial 'member_documents/edit_delete', :locals => { :member_document => member_document } %>
+<% end %>

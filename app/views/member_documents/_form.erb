@@ -1,0 +1,9 @@
+<h1>Edit Member Document</h1>
+<form method="post" action="/member_documents/<%= member_document.id%>" enctype="multipart/form-data">
+  <div>document_id <%= member_document.id%></div>
+  <div>document_name <input type="text" name="document_name" value="<%= member_document.document_name%>"></div>
+  <div>document_kind <input type="text" name="document_kind" value="<%= member_document.document_kind%>"></div>
+  <div>member_id <input type="text" name="member_id" value="<%= member_document.member_id%>"></div>
+  <div>file <input type="file" name="file"></div>
+  <div><input type="submit" value="Upload" name="submit"></div>
+</form>

@@ -1,0 +1,11 @@
+<%= partial 'member_documents/flash', :locals => { :flash => flash } %>
+
+
+<h1>Upload Member Document</h1>
+<form method="post" action="/member_documents" enctype="multipart/form-data">
+    <div>member_id <input type="text" name="member_id"></div>
+    <div>document_name <input type="text" name="document_name"></div>
+    <div>document_kind <input type="text" name="document_kind"></div>
+    <div>file <input type="file" name="file"></div>
+    <div><input type="submit" value="Upload" name="submit"></div>
+</form>

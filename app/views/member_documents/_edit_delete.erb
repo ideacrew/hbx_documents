@@ -1,0 +1,5 @@
+<div>
+   <div><%= link_to('Edit', "/member_documents/#{member_document.id}/edit")%></div>
+   <div><%= link_to('Delete', "/member_documents/#{member_document.id}", :method => :delete)%></div>
+  <div><%= button_to 'Delete', url("/member_documents/#{member_document.id}"), :method => :delete %></div>
+</div>
