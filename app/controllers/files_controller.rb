@@ -2,7 +2,7 @@ HbxDocuments::App.controllers :files do
 
   register Padrino::Flash
 
-  get :new, :map => "new" do
+  get :new, :map => "files/new" do
       render 'files/new'
   end
 
