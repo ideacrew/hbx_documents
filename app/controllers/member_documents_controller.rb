@@ -51,23 +51,24 @@ HbxDocuments::App.controllers :member_documents do
   post :store, :map => "/member_documents" do
     begin
       file = params[:file]
-      if file[:tempfile].blank?
-        error 422
+      if file.blank? || file[:tempfile].blank?
+        redirect('/member_documents/new', :notice => "Error. File missing.\n", :status => '422')
+        return
       end
 
       tempfile = file[:tempfile]
       content_type = params[:content_type] || "application/octet-stream"
-      file_name = params[:file_name] || params[:file][:filename]
+      file_name = params[:document_name] || params[:file_name] || params[:file][:filename]
 
       stored_file = StoredFile.store(file_name, content_type, tempfile)
 
       member_document = MemberDocument.create!(
           :document_id => stored_file.id,
-          :document_name => params[:document_name],
-          :document_kind => params[:file_name],
+          :document_name => file_name,
+          :document_kind => params[:document_kind],
           :member_id => params[:member_id]
       )
-      redirect('/member_documents/new', :notice => "Successfully processed file #{params[:file][:filename]} file id:#{stored_file.id} member_document: #{member_document.id}", :status => '200')
+      redirect('/member_documents/new', :notice => "Successfully processed file #{params[:file][:filename]} member_document: #{member_document}", :status => '200')
     rescue Exception=>e
       redirect('/member_documents/new', :notice => "Error processing file #{params[:file]}.\n" + e.message, :status => '422')
     end
