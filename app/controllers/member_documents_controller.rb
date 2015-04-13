@@ -4,11 +4,6 @@ HbxDocuments::App.controllers :member_documents do
     render 'member_documents/new'
   end
 
-  get :edit, :map => "/member_documents/:id/edit" do
-    @member_document = MemberDocument.find(params[:id])
-    render 'edit'
-  end
-
   delete :destroy, :map =>"member_documents/:id" do
     member_document = nil
     begin
