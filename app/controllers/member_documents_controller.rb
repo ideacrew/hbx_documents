@@ -13,39 +13,12 @@ HbxDocuments::App.controllers :member_documents do
     member_document = nil
     begin
       member_document = MemberDocument.find(params[:id])
+      document_id = member_document.document_id
       member_document.delete
-      redirect('/member_documents', :notice => "Deleted Member Document #{params[:id]}.\n")
+      redirect('/member_documents', :notice => "Deleted Member Document #{document_id}.\n")
     rescue Exception=>e
-      redirect("/member_documents/#{params[:id]}", :notice => "Error deleting Member Document #{params[:id]}.\n" + e.message, :status => '422')
+      redirect("/member_documents", :notice => "Error deleting Member Document\n" + e.message, :status => '422')
     end
-  end
-
-  get :show, :map => "/member_documents/:id" do
-    @member_document = MemberDocument.find(params[:id])
-    render 'show'
-  end
-
-  post :update, :map => "/member_documents/:id" do
-    begin
-      @member_document = MemberDocument.find(params[:id])
-      @member_document.document_name = params[:document_name]
-      @member_document.document_kind = params[:document_kind]
-      @member_document.member_id = params[:member_id]
-
-      if params[:file]
-        tempfile = params[:file][:tempfile]
-        content_type = params[:content_type] || "application/octet-stream"
-        file_name = params[:file][:filename]
-        stored_file = StoredFile.store(file_name, content_type, tempfile)
-        @member_document.document_id = stored_file.id
-      end
-
-      @member_document.save
-      render 'show'
-    rescue Exception => e
-      redirect back, notice:"Failed to edit member document " + e.message
-    end
-
   end
 
   post :store, :map => "/member_documents" do
@@ -58,19 +31,26 @@ HbxDocuments::App.controllers :member_documents do
 
       tempfile = file[:tempfile]
       content_type = params[:content_type] || "application/octet-stream"
-      file_name = params[:document_name] || params[:file_name] || params[:file][:filename]
+      file_name = params[:file_name] || params[:file][:filename]
 
       stored_file = StoredFile.store(file_name, content_type, tempfile)
+
+      document_kind = "1095A"
+      if file_name.downcase.include?("corrected")
+        document_kind = "1095A Correction"
+      end
+
+      serial_number, hbx, num2, member_id, policy_id, *whatevs = file_name.split(".").first.split("_")
 
       member_document = MemberDocument.create!(
           :document_id => stored_file.id,
           :document_name => file_name,
-          :document_kind => params[:document_kind],
-          :member_id => params[:member_id]
+          :document_kind => document_kind,
+          :member_id => member_id
       )
-      redirect('/member_documents/new', :notice => "Successfully processed file #{params[:file][:filename]} member_document: #{member_document}", :status => '200')
+      redirect('/member_documents/new', :notice => "Successfully processed file #{file_name} member_document: #{member_document}", :status => '200')
     rescue Exception=>e
-      redirect('/member_documents/new', :notice => "Error processing file #{params[:file]}.\n" + e.message, :status => '422')
+      redirect('/member_documents/new', :notice => "Error processing file #{file_name}.\n" + e.message, :status => '422')
     end
   end
 
@@ -79,6 +59,7 @@ HbxDocuments::App.controllers :member_documents do
     render 'index'
   end
 
+=begin
   post :list, :map => "/member_documents" do
     xml = request.body.read
     doc_service = Services::ListMemberDocuments.new
@@ -90,7 +71,7 @@ HbxDocuments::App.controllers :member_documents do
     content_type "application/xml"
     body res_body
   end
-
+=end
 
   post :download , :map => "/member_documents/:id/download" do
     xml = request.body.read
