@@ -43,4 +43,5 @@ end
 Padrino.after_load do
 end
 
+Padrino::Logger::Config[:development][:stream] = :to_file
 Padrino.load!

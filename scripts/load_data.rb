@@ -1,4 +1,5 @@
 class DataLoaderFor1095A
+
   def initialize
   end
 
@@ -6,12 +7,15 @@ class DataLoaderFor1095A
 #    MemberDocument.delete_all
 #    StoredFileChunk.delete_all
 #    StoredFile.delete_all
+
+    logger.write "Initial MemberDocument.count: #{MemberDocument.count}"
+    puts "Initial MemberDocument.count: #{MemberDocument.count}"
+
     files = Dir.glob(File.join(Padrino.root, "test_data/**", "*.pdf"))
-    total = files.length
-    puts total
+    puts "total number of files #{files.length}"
     pb = ProgressBar.create(
        :title => "Loading pdfs",
-       :total => total,
+       :total => files.length,
        :format => "%t %a %e |%B| %P%%"
     )
     files.each do |f|
@@ -26,15 +30,19 @@ class DataLoaderFor1095A
       in_io = File.open(f, 'rb')
       sf = StoredFile.store(upload_name, ct, in_io)
       sf.id
-      MemberDocument.create!(
+      member_document = MemberDocument.create!(
         :document_id => sf.id,
         :document_name => upload_name,
         :document_kind => document_kind,
         :member_id => m_id
       )
+      logger.write "Created MemberDocument(id document_name): #{member_document.id} #{member_document.document_name}"
       in_io.close
       pb.increment
     end
+
+    logger.write "Final MemberDocument.count: #{MemberDocument.count}"
+    puts "Final MemberDocument.count: #{MemberDocument.count}"
   end
 
   def self.run
