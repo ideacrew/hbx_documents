@@ -4,9 +4,7 @@ op = CSV.open("policies.csv", "w")
 
 @documents = MemberDocument.all
 
-# search for policy id in database
 def file_status(document)
-
    if document.document_name =~ /_IRS1095A/
      return "2014 Original"
    elsif document.document_name =~ /_IRS1095ACorrected/
