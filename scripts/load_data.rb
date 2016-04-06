@@ -20,6 +20,12 @@ class DataLoaderFor1095A
     )
     files.each do |f|
       f_name = File.basename(f)
+
+      if MemberDocument.where(document_name: f_name).count > 0
+        logger.write "Duplicate MemberDocument with name: #{f_name}. Skipping"
+        next
+      end
+
       upload_name = f_name
       document_kind = "1095A"
       if f_name.downcase.include?("corrected")
