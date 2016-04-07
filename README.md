@@ -22,5 +22,6 @@ Currently the store is used for 1095A PDF files but it is a generic file storage
 - Delete StoredFile
 
 ## Batch Upload 1095As
+- Plug into DCHBX LAN
 - Place all the 1095A pdfs in ```/test_data/```
 - run ```padrino r scripts/load_data.rb -e production``` 
