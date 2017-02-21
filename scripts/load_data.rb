@@ -1,28 +1,31 @@
+require 'fileutils'
+
 class DataLoaderFor1095A
 
   def initialize
+    @source_dir = "1095A_documents"
   end
 
   def load
-#    MemberDocument.delete_all
-#    StoredFileChunk.delete_all
-#    StoredFile.delete_all
+    puts "Initial document count in database: #{MemberDocument.count}"
 
-    logger.write "Initial MemberDocument.count: #{MemberDocument.count}"
-    puts "Initial MemberDocument.count: #{MemberDocument.count}"
+    Dir.mkdir(@source_dir) unless File.exists?(@source_dir)
 
-    files = Dir.glob(File.join(Padrino.root, "test_data/**", "*.pdf"))
-    puts "total number of files #{files.length}"
+    files = Dir.glob(File.join(Padrino.root, "#{@source_dir}/**", "*.pdf"))
+
+    puts "Total number of files to upload: #{files.length}"
+
     pb = ProgressBar.create(
        :title => "Loading pdfs",
        :total => files.length,
        :format => "%t %a %e |%B| %P%%"
     )
+
     files.each do |f|
       f_name = File.basename(f)
 
       if MemberDocument.where(document_name: f_name).count > 0
-        logger.write "Duplicate MemberDocument with name: #{f_name}. Skipping"
+        puts "Duplicate document with name: #{f_name}. Skipping"
         next
       end
 
@@ -31,6 +34,7 @@ class DataLoaderFor1095A
       if f_name.downcase.include?("corrected")
         document_kind = "1095A Correction"
       end
+
       ct = "application/pdf"
       num1, hbx, num2, m_id, p_id, *whatevs = f_name.split(".").first.split("_")
       in_io = File.open(f, 'rb')
@@ -42,13 +46,14 @@ class DataLoaderFor1095A
         :document_kind => document_kind,
         :member_id => m_id
       )
-      logger.write "Created MemberDocument(id document_name): #{member_document.id} #{member_document.document_name}"
+
       in_io.close
       pb.increment
     end
 
-    logger.write "Final MemberDocument.count: #{MemberDocument.count}"
-    puts "Final MemberDocument.count: #{MemberDocument.count}"
+    puts "Final document count in database: #{MemberDocument.count}"
+
+    FileUtils.rm_rf Dir.glob(File.join(Padrino.root, "#{@source_dir}", '*'))
   end
 
   def self.run
