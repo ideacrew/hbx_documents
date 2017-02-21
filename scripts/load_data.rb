@@ -23,12 +23,6 @@ class DataLoaderFor1095A
 
     logger.write "Total number of files to upload: #{files.length}"
 
-    pb = ProgressBar.create(
-       :title => "Loading 1095A pdfs",
-       :total => files.length,
-       :format => "%t %a %e |%B| %P%%"
-    )
-
     files.each do |f|
       f_name = File.basename(f)
 
@@ -56,7 +50,6 @@ class DataLoaderFor1095A
       )
 
       in_io.close
-      pb.increment
     end
 
     logger.write "Final document count in database: #{MemberDocument.count}"
