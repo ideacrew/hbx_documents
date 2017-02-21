@@ -1,22 +1,30 @@
 require 'fileutils'
 
+# Usage
+# padrino r scripts/load_data.rb
+# The 1095A pdfs are to stored on RAILS_ROOT/1095A_documents directory
+
 class DataLoaderFor1095A
 
   def initialize
     @source_dir = "1095A_documents"
+
+    unless File.exists?(@source_dir)
+      logger.write "Source directory #{@source_dir} does not exit..."
+      Dir.mkdir(@source_dir)
+      logger.write "#{@source_dir} directory created."
+    end
   end
 
   def load
-    puts "Initial document count in database: #{MemberDocument.count}"
-
-    Dir.mkdir(@source_dir) unless File.exists?(@source_dir)
+    logger.write "Initial document count in database: #{MemberDocument.count}"
 
     files = Dir.glob(File.join(Padrino.root, "#{@source_dir}/**", "*.pdf"))
 
-    puts "Total number of files to upload: #{files.length}"
+    logger.write "Total number of files to upload: #{files.length}"
 
     pb = ProgressBar.create(
-       :title => "Loading pdfs",
+       :title => "Loading 1095A pdfs",
        :total => files.length,
        :format => "%t %a %e |%B| %P%%"
     )
@@ -25,7 +33,7 @@ class DataLoaderFor1095A
       f_name = File.basename(f)
 
       if MemberDocument.where(document_name: f_name).count > 0
-        puts "Duplicate document with name: #{f_name}. Skipping"
+        logger.write "Duplicate document with name: #{f_name}. Skipping"
         next
       end
 
@@ -51,7 +59,7 @@ class DataLoaderFor1095A
       pb.increment
     end
 
-    puts "Final document count in database: #{MemberDocument.count}"
+    logger.write "Final document count in database: #{MemberDocument.count}"
 
     FileUtils.rm_rf Dir.glob(File.join(Padrino.root, "#{@source_dir}", '*'))
   end
