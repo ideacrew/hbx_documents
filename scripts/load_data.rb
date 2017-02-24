@@ -1,28 +1,33 @@
+require 'fileutils'
+
+# Usage
+# padrino r scripts/load_data.rb
+# The 1095A pdfs are to stored on RAILS_ROOT/1095A_documents directory
+
 class DataLoaderFor1095A
 
   def initialize
+    @source_dir = "1095A_documents"
+
+    unless File.exists?(@source_dir)
+      logger.write "Source directory #{@source_dir} does not exit..."
+      Dir.mkdir(@source_dir)
+      logger.write "#{@source_dir} directory created."
+    end
   end
 
   def load
-#    MemberDocument.delete_all
-#    StoredFileChunk.delete_all
-#    StoredFile.delete_all
+    logger.write "Initial document count in database: #{MemberDocument.count}"
 
-    logger.write "Initial MemberDocument.count: #{MemberDocument.count}"
-    puts "Initial MemberDocument.count: #{MemberDocument.count}"
+    files = Dir.glob(File.join(Padrino.root, "#{@source_dir}/**", "*.pdf"))
 
-    files = Dir.glob(File.join(Padrino.root, "test_data/**", "*.pdf"))
-    puts "total number of files #{files.length}"
-    pb = ProgressBar.create(
-       :title => "Loading pdfs",
-       :total => files.length,
-       :format => "%t %a %e |%B| %P%%"
-    )
+    logger.write "Total number of files to upload: #{files.length}"
+
     files.each do |f|
       f_name = File.basename(f)
 
       if MemberDocument.where(document_name: f_name).count > 0
-        logger.write "Duplicate MemberDocument with name: #{f_name}. Skipping"
+        logger.write "Duplicate document with name: #{f_name}. Skipping"
         next
       end
 
@@ -31,6 +36,7 @@ class DataLoaderFor1095A
       if f_name.downcase.include?("corrected")
         document_kind = "1095A Correction"
       end
+
       ct = "application/pdf"
       num1, hbx, num2, m_id, p_id, *whatevs = f_name.split(".").first.split("_")
       in_io = File.open(f, 'rb')
@@ -42,13 +48,13 @@ class DataLoaderFor1095A
         :document_kind => document_kind,
         :member_id => m_id
       )
-      logger.write "Created MemberDocument(id document_name): #{member_document.id} #{member_document.document_name}"
+
       in_io.close
-      pb.increment
     end
 
-    logger.write "Final MemberDocument.count: #{MemberDocument.count}"
-    puts "Final MemberDocument.count: #{MemberDocument.count}"
+    logger.write "Final document count in database: #{MemberDocument.count}"
+
+    FileUtils.rm_rf Dir.glob(File.join(Padrino.root, "#{@source_dir}", '*'))
   end
 
   def self.run
