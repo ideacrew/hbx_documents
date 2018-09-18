@@ -8,6 +8,7 @@ class MemberDocument
   field(:document_kind, :type => String)
   field(:document_name, :type => String)
   field(:upload_date, :type => Time)
+  field(:update_date, :type => Time)
 
   index({:member_id => 1})
   index({:document_kind => 1})
@@ -21,6 +22,14 @@ class MemberDocument
   private
 
   def set_upload_date
-    self.upload_date = Time.now.utc
+    if self.upload_date.blank?
+      self.upload_date = Time.now.utc
+    else
+      set_update_date
+    end
+  end
+
+  def set_update_date
+    self.update_date = Time.now.utc
   end
 end
