@@ -1,5 +1,5 @@
 require 'fileutils'
-
+require 'csv'
 # Usage
 # padrino r scripts/update_document_linkages.rb
 # Requires a spreadsheet that should be placed in the root directory. It should have a filename of documents_to_update.csv
