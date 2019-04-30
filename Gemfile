@@ -37,7 +37,7 @@ gem 'ruby-progressbar'
 # end
 group :production do
     gem 'unicorn'
-    gem 'bluepill', '0.0.69'
+    gem 'bluepill', '0.1.2'
 end
 
 group :development do
