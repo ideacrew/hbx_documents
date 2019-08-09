@@ -6,3 +6,14 @@ vendor/gems/*
 .sass-cache/*
 db/*.db
 .*.sw*
+
+# Make sure no sensitive data is accidentally commited
+# add w/ git add --force if actually docs
+*.csv
+*.txt
+*.xml
+*.xls
+*.xlst
+*.xlsx
+*.doc
+*.docx
